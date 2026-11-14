@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ezio Trilogy - Florenzian</title>
+<meta name="description" content="The story of Ezio Auditore da Firenze.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/ezio.css" rel="stylesheet">
+</head>
+<body class="ac-page">
+<div id="prog"></div>
+
+<nav class="nav solid" id="nav">
+  <a class="brand" href="index.html">Florenzian</a>
+  <div class="navr">
+    <a class="l" href="index.html" data-i18n="n_back">Back to Engine</a>
+    <div class="lang" id="langSw" data-l="en" role="group">
+      <button type="button" data-l="en">EN</button>
+      <button type="button" data-l="it">IT</button>
+    </div>
+  </div>
+</nav>
+
+<header class="ac-hero">
+  <div class="ac-hero-in">
+    <span class="ac-eye" data-i18n="ac_eye">MEMORY SEQUENCE</span>
+    <h1 class="ac-title" data-i18n="ezio_title">The Ezio Trilogy</h1>
+    <p class="ac-sub" data-i18n="ezio_sub">Requiescat in pace.</p>
+    <p class="ac-motto" data-i18n="ac_motto">Nothing is true, everything is permitted.</p>
+  </div>
+</header>
+
+<section class="ac-list">
+
+  <article class="ac-ch rv">
+    <figure class="ac-cover">
+      <img src="assets/Ezio/ac2_cover.jpg" alt="Assassin's Creed II">
+      <span class="ac-no">I</span>
+    </figure>
+    <div class="ac-body">
+      <div class="ac-meta"><span>1476 - 1499</span><span data-i18n="g1_c">Florence · Venice · Rome</span></div>
+      <h2 data-i18n="ac2_title">Assassin's Creed II</h2>
+      <p class="ac-lead" data-i18n="ac2_desc">Ezio's journey begins in Florence as a young nobleman. After his family is betrayed, he becomes an Assassin to seek revenge and discovers a vast conspiracy that threatens the freedom of humanity.</p>
+      <p class="ac-p ac-first" data-i18n="g1_p1"></p>
+      <p class="ac-p" data-i18n="g1_p2"></p>
+    </div>
+  </article>
+
+  <article class="ac-ch rv">
+    <figure class="ac-cover">
+      <img src="assets/Ezio/acb_cover.jpg" alt="Assassin's Creed: Brotherhood">
+      <span class="ac-no">II</span>
+    </figure>
+    <div class="ac-body">
+      <div class="ac-meta"><span>1499 - 1507</span><span data-i18n="g2_c">Rome</span></div>
+      <h2 data-i18n="acb_title">Assassin's Creed: Brotherhood</h2>
+      <p class="ac-lead" data-i18n="acb_desc">Ezio travels to Rome, the heart of the Templar Order. He must rebuild the Assassin Brotherhood from the shadows to liberate the Eternal City and deal a final blow to the Borgia family.</p>
+      <p class="ac-p ac-first" data-i18n="g2_p1"></p>
+      <p class="ac-p" data-i18n="g2_p2"></p>
+    </div>
+  </article>
+
+  <article class="ac-ch rv">
+    <figure class="ac-cover">
+      <img src="assets/Ezio/acr_cover.jpg" alt="Assassin's Creed: Revelations">
+      <span class="ac-no">III</span>
+    </figure>
+    <div class="ac-body">
+      <div class="ac-meta"><span>1511 - 1512</span><span data-i18n="g3_c">Masyaf · Constantinople</span></div>
+      <h2 data-i18n="acr_title">Assassin's Creed: Revelations</h2>
+      <p class="ac-lead" data-i18n="acr_desc">Ezio follows the footsteps of his ancestor Altaïr in Constantinople. It is a journey of discovery, seeking the secrets of the Assassin Order and ultimately finding the true meaning of his life.</p>
+      <p class="ac-p ac-first" data-i18n="g3_p1"></p>
+      <p class="ac-p" data-i18n="g3_p2"></p>
+    </div>
+  </article>
+
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div><span class="brand">Florenzian</span></div>
+    <div class="fl"></div>
+    <p class="mb-0">
+      <span data-i18n="f_by">Powered by</span> 
+      
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="dev-link">Dev.Ankur</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Translations: i18n.js first, then the Ezio additions -->
+<script src="js/i18n.js"></script>
+<script src="js/ezio-i18n.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const store = {
+    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch (e) { return d } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} }
+  };
+  const D = window.I18N;
+  let lang = store.get("flz_lang", null) || ((navigator.language || "").slice(0, 2) === "it" ? "it" : "en");
+  const t = k => (D[lang] && D[lang][k]) ? D[lang][k] : k;
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    const langSw = document.getElementById("langSw");
+    if (langSw) langSw.dataset.l = lang;
+    document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  }
+
+  document.querySelectorAll("#langSw button").forEach(b => b.onclick = () => {
+    if (b.dataset.l === lang) return;
+    lang = b.dataset.l;
+    store.set("flz_lang", lang);
+    document.body.classList.add("swap");
+    setTimeout(() => { applyLang(); document.body.classList.remove("swap"); }, 230);
+  });
+
+  // Navbar + scroll progress bar
+  const nav = document.getElementById("nav"), prog = document.getElementById("prog");
+  const onScroll = () => {
+    nav.classList.toggle("solid", window.scrollY > 50);
+    prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100 || 0) + "%";
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Reveal animation
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    io.unobserve(e.target);
+  }), { threshold: .12 });
+  document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+  applyLang();
+});
+</script>
+
+<!-- Web inspect Off code -->
+     <script>
+    // 1. Right Click Block
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // 2. F12 ar Developer Tools Shortcut Block
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "F12" || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+
+        if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // 3. Extra Security
+    setInterval(function() {
+        debugger; 
+    }, 1000); 
+    
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        alert("Copying is disabled on this website.");
+    });
+</script>
+</body>
+</html>
