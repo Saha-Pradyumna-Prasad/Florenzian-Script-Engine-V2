@@ -1,0 +1,493 @@
+/* =========================================
+   1. VARIABLES & GLOBAL RESET
+   ========================================= */
+:root{
+  --marble:#f6f2ea; --stone:#e7dfcd; --ink:#1c1a17; --arno:#1f4a3a; 
+  --rosso:#9d2b2b; --oro:#b48a3c; --muted:#6b645a;
+  --serif:'Cormorant Garamond',Georgia,serif; 
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif; 
+  --mono:'JetBrains Mono',monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;font-family:var(--sans);background:var(--marble);color:var(--ink);line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+section{padding:5rem 2rem}
+.wrap{max-width:1200px;margin:0 auto}
+section,header,footer{transition:opacity .22s}
+body.swap section,body.swap header,body.swap footer{opacity:0}
+
+/* =========================================
+   2. SCROLL PROGRESS BAR (#prog)
+   ========================================= */
+#prog{
+  position:fixed;top:0;left:0;height:3px;width:0;z-index:60;
+  background:linear-gradient(90deg,#1f7a4f 33%,#fff 33% 66%,#c0392b 66%);
+}
+
+/* =========================================
+   3. NAVIGATION BAR (Nav)
+   ========================================= */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:.8rem 2rem;transition:.3s;color:#fff;
+}
+.nav.solid{background:rgba(246,242,234,.94);backdrop-filter:blur(8px);color:var(--ink);box-shadow:0 1px 0 var(--stone)}
+.brand{font-family:var(--serif);font-size:1.6rem;font-weight:700;text-decoration:none}
+.nav a.l{margin-left:1.6rem;text-decoration:none;font-weight:600;font-size:.92rem;opacity:.9}
+.nav a.l:hover{color:var(--oro)}
+.navr{display:flex;align-items:center}
+.eng{margin-left:1.6rem;font:600 .75rem var(--mono);padding:.25rem .7rem;border:1px solid currentColor;border-radius:99px}
+.eng.wasm{color:#7fd6a8}
+.nav.solid .eng.wasm{color:var(--arno)}
+
+/* Language Toggle */
+.lang{position:relative;display:flex;margin-left:1.2rem;border:1px solid currentColor;border-radius:99px;padding:2px;isolation:isolate}
+.lang::before{content:"";position:absolute;z-index:-1;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);border-radius:99px;background:var(--oro);transition:transform .35s cubic-bezier(.5,1.6,.4,1)}
+.lang[data-l=it]::before{transform:translateX(100%)}
+.lang button{all:unset;cursor:pointer;font:700 .75rem var(--mono);padding:.3rem .8rem;color:inherit;transition:color .3s}
+.lang[data-l=en] button[data-l=en], .lang[data-l=it] button[data-l=it]{color:#1c1a17}
+.lang button:focus-visible{outline:2px solid var(--oro);outline-offset:2px;border-radius:99px}
+
+/* =========================================
+   4. HERO SECTION (Header)
+   ========================================= */
+.hero{
+  position:relative;overflow:hidden;min-height:100vh;display:grid;align-items:center;padding:7rem 2rem 4rem;color:#fff;
+  background:linear-gradient(180deg,rgba(28,26,23,.55),rgba(28,26,23,.82)),url('../assets/bgd_pic.jpg') center/cover fixed;
+}
+.hero-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+.hero h1{font-family:var(--serif);font-size:clamp(3.2rem,8vw,6.2rem);line-height:.95;margin:0 0 1.2rem;font-weight:600;letter-spacing:-.02em}
+.hero p{font-size:1.1rem;max-width:34ch;color:#ece5d4}
+
+/* Hero Animations */
+.hero h1, .hero p, .hero .cta, .term{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero p{animation-delay:.15s}
+.hero .cta{animation-delay:.3s}
+.term{animation-delay:.45s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}}
+
+/* Hero Sky SVG */
+.sky{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(70px,12vw,140px);fill:var(--marble);animation:rise 1.4s .6s both}
+
+/* Terminal Box */
+.term{background:rgba(20,18,15,.82);border:1px solid rgba(180,138,60,.5);border-radius:4px 4px 4px 4px;font:500 .95rem var(--mono);padding:1.2rem 1.4rem;min-height:190px}
+.term .d{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--rosso)}
+.term .d:nth-child(2){background:var(--oro)}
+.term .d:nth-child(3){background:var(--arno)}
+.term pre{margin:1rem 0 0;white-space:pre-wrap;color:#f1e9d6;font:inherit}
+.term .ok{color:#7fd6a8}
+.cur{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Buttons */
+.btn-oro{position:relative;overflow:hidden;transition:transform .25s,background .25s;display:inline-block;background:var(--oro);color:#1c1a17;font-weight:700;padding:.85rem 1.6rem;border-radius:2px;text-decoration:none;margin:.5rem .6rem 0 0;border:0}
+.btn-oro:hover{background:#cfa44b;transform:translateY(-2px)}
+.btn-oro::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-120%)}
+.btn-oro:hover::after{transform:translateX(120%);transition:transform .7s}
+.btn-line{background:none;color:#fff;border:1px solid rgba(255,255,255,.6)}
+.btn-sm{padding:.45rem 1rem;font-size:.85rem;margin:0}
+
+/* =========================================
+   5. STATS SECTION
+   ========================================= */
+.stats{padding:2.5rem 2rem 1rem}
+.stats-in{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.stats-in div{padding:0 1rem;border-left:1px solid var(--stone)}
+.stats-in div:first-child{border-left:0}
+.stats b{display:block;font:600 clamp(2.6rem,6vw,4.4rem)/1 var(--serif);color:var(--arno)}
+.stats span{color:var(--muted);font-weight:600}
+
+/* =========================================
+   6. STUDIO SECTION (Function Calculator)
+   ========================================= */
+h2.t{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.2rem);font-weight:600;margin:0 0 .4rem}
+.sub{color:var(--muted);max-width:60ch;margin-bottom:2.2rem}
+.rule{height:3px;width:90px;background:linear-gradient(90deg,var(--arno) 33%,var(--stone) 33% 66%,var(--rosso) 66%);margin:0 0 1.2rem}
+
+.studio{display:grid;grid-template-columns:380px 1fr;gap:1.5rem}
+.panel{background:#fff;border:1px solid var(--stone);border-radius:6px;box-shadow:0 18px 40px -22px rgba(28,26,23,.35)}
+.search{padding:1rem;border-bottom:1px solid var(--stone)}
+.search input,.custom-input,textarea{width:100%;border:1.5px solid var(--stone);border-radius:4px;padding:.75rem 1rem;font:600 1rem var(--sans);background:var(--marble);outline:none}
+.search input:focus,.custom-input:focus,textarea:focus{border-color:var(--oro);background:#fff}
+
+/* Chips (Categories) */
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;padding:.7rem 1rem 0}
+.chip{border:1px solid var(--stone);background:#fff;border-radius:99px;padding:.2rem .8rem;font:600 .78rem var(--sans);cursor:pointer}
+.chip.on,.chip:hover{background:var(--arno);color:#fff;border-color:var(--arno)}
+
+/* Function List */
+.function-list{max-height:520px;overflow:auto;padding:.7rem}
+.func-item{position:relative;padding:.8rem 1rem;border-left:3px solid transparent;cursor:pointer;border-radius:4px;transition:.2s}
+.func-item:hover{background:var(--marble)}
+.func-item.active{background:var(--arno);color:#fff;border-left-color:var(--oro)}
+.func-item .h{display:flex;justify-content:space-between;gap:.5rem;font-weight:700}
+.func-badge{font-size:.72rem;font-weight:600;background:var(--stone);color:var(--ink);padding:.1rem .6rem;border-radius:99px;white-space:nowrap}
+.func-item.active .func-badge{background:rgba(255,255,255,.2);color:#fff}
+.func-desc{font-size:.82rem;color:var(--muted)}
+.func-item.active .func-desc{color:#dfe9e3}
+.func-item.active::after{content:"";position:absolute;right:12px;top:50%;width:8px;height:8px;border-radius:50%;background:var(--oro);animation:ping 1.6s infinite}
+@keyframes ping{50%{box-shadow:0 0 0 7px rgba(180,138,60,0)}0%{box-shadow:0 0 0 0 rgba(180,138,60,.6)}}
+
+/* Console Area */
+.console-area{padding:2rem;display:flex;flex-direction:column;justify-content:space-between;gap:1.4rem}
+.ctitle{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem}
+.ctitle h3{font-family:var(--serif);font-size:2.2rem;margin:0}
+.ita-tag{background:var(--rosso);color:#fff;font-weight:700;font-size:.82rem;padding:.3rem 1rem;border-radius:2px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0}
+.input-label{font-weight:700;font-size:.85rem;margin-bottom:.35rem;display:block}
+
+/* Run Button */
+.btn-run{width:100%;background:var(--arno);color:#fff;border:0;border-radius:4px;padding:1rem;font-weight:700;font-size:1.02rem;cursor:pointer;transition:.2s}
+.btn-run:hover{background:#17382c;transform:translateY(-1px)}
+
+/* Output & History */
+.out{margin-top:1.4rem;background:var(--marble);border:1px solid var(--oro);border-radius:4px;padding:1rem 1.3rem;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.out small{font-weight:800;color:var(--arno);display:block}
+.out-v{font:700 1.8rem var(--mono);word-break:break-all;color:var(--arno)}
+.out-v.err{color:var(--rosso);font-size:1.1rem}
+.pop{animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.96);opacity:.4}}
+.icon-btn{border:1px solid var(--stone);background:#fff;border-radius:4px;padding:.4rem .7rem;cursor:pointer}
+.hist{margin-top:1.2rem;font:500 .85rem var(--mono);color:var(--muted)}
+.hist div{padding:.2rem 0;border-bottom:1px dashed var(--stone)}
+
+/* C Signature Box */
+.sig{margin-top:1.4rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;background:var(--ink);border-radius:4px;padding:.8rem 1rem;border-left:3px solid var(--oro)}
+.sig small{color:#b9b19e;font-weight:700;width:100%}
+.sig code{flex:1;font:500 .9rem var(--mono);color:#7fd6a8;word-break:break-all}
+
+/* =========================================
+   7. SCRIPT LAB SECTION
+   ========================================= */
+.lab{background:var(--ink);color:#f1e9d6}
+.lab .sub{color:#b9b19e}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.lab textarea{min-height:230px;background:#14120f;color:#f1e9d6;border-color:#3a352c;font:500 1rem var(--mono);resize:vertical}
+.lab .chip{background:transparent;color:#f1e9d6;border-color:#4a4438}
+.lab .chip:hover{background:var(--oro);color:#1c1a17;border-color:var(--oro)}
+.tok{display:inline-block;margin:.2rem;padding:.15rem .6rem;border-radius:3px;font:600 .8rem var(--mono);border:1px solid #4a4438}
+.tok.NUM{color:#e9c46a}.tok.ID{color:#7fd6a8}.tok.OP{color:#e57373}
+.lab-out{background:#14120f;border:1px solid #3a352c;border-radius:4px;padding:1rem 1.2rem;margin-bottom:1rem}
+.lab-out h4{font:700 .85rem var(--sans);color:#b9b19e;margin:0 0 .5rem}
+
+/* =========================================
+   8. HOW IT WORKS SECTION (Pipeline)
+   ========================================= */
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;position:relative}
+.pipe::before{content:"";position:absolute;top:34px;left:10%;right:10%;height:2px;background:repeating-linear-gradient(90deg,var(--oro) 0 8px,transparent 8px 16px)}
+.step{position:relative;text-align:center;padding:0 .8rem}
+.step i{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 1rem;border-radius:50%;background:#fff;border:2px solid var(--stone);font-size:1.4rem;color:var(--arno);animation:glow 8s infinite}
+.step:nth-child(2) i{animation-delay:2s}
+.step:nth-child(3) i{animation-delay:4s}
+.step:nth-child(4) i{animation-delay:6s}
+@keyframes glow{
+  0%,22%{background:var(--arno);color:#fff;border-color:var(--oro);transform:scale(1.12);box-shadow:0 10px 24px -8px rgba(31,74,58,.6)}
+  30%,100%{background:#fff;color:var(--arno);border-color:var(--stone);transform:none;box-shadow:none}
+}
+.step h5{font-family:var(--serif);font-size:1.5rem;margin:0}
+.step p{color:var(--muted);font-size:.9rem;margin:.3rem 0 0}
+
+/* =========================================
+   9. INSPIRATION SECTION (Assassin's Creed)
+   ========================================= */
+.inspiration-section { background: var(--marble); padding: 5rem 2rem; }
+.insp-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 2rem; }
+.insp-content h3 { font-family: var(--serif); font-size: 2.2rem; color: var(--arno); margin-bottom: 1.5rem; font-weight: 700; }
+.insp-content p { font-size: 1.05rem; color: var(--ink); margin-bottom: 1.2rem; line-height: 1.8; }
+
+.insp-quote {
+  background: #fff; border-left: 4px solid var(--oro); padding: 1.5rem; margin-top: 2rem;
+  border-radius: 0 8px 8px 0; box-shadow: 0 10px 30px -15px rgba(28,26,23,0.15);
+  position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.insp-quote:hover { transform: translateY(-5px); box-shadow: 0 15px 35px -15px rgba(180,138,60,0.4); }
+.insp-quote i { color: var(--oro); font-size: 1.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+.insp-quote p { font-family: var(--serif); font-style: italic; font-size: 1.25rem; margin: 0; color: var(--arno); }
+
+.insp-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.insp-img-box {
+  position: relative; border-radius: 8px; overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(28,26,23,0.4);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.insp-img-box:nth-child(1) { transform: translateY(20px); }
+.insp-img-box:nth-child(2) { transform: translateY(-20px); }
+.insp-img-box img { width: 100%; height: 350px; object-fit: cover; transition: transform 0.6s ease; display: block; }
+.insp-img-box:hover { transform: translateY(0) scale(1.02); box-shadow: 0 25px 50px -12px rgba(31,74,58,0.5); z-index: 2; }
+.insp-img-box:hover img { transform: scale(1.1); }
+.insp-caption {
+  position: absolute; bottom: 0; left: 0; width: 100%; padding: 1.5rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(28,26,23,0.9), transparent); color: #fff;
+  font-family: var(--serif); font-size: 1.2rem; font-weight: 600; text-align: center; pointer-events: none;
+}
+
+/* =========================================
+   10. ITALIA GALLERY SECTION
+   ========================================= */
+.gal-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.6rem}
+.arch{cursor:pointer;background:#fff;border:1px solid var(--stone);border-radius:140px 140px 6px 6px;overflow:hidden;transition:.35s;text-align:center;padding:0 0 1.2rem;animation:rise .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 70ms)}
+.arch:hover{transform:translateY(-6px);box-shadow:0 22px 40px -20px rgba(28,26,23,.5);border-color:var(--oro)}
+.arch .im{height:270px;background:linear-gradient(160deg,var(--arno),var(--ink)) center/cover;margin-bottom:1rem;transition:transform .6s}
+.arch:hover .im{transform:scale(1.06)}
+.arch h5{font-family:var(--serif);font-size:1.5rem;margin:0}
+.arch small{color:var(--muted)}
+
+/* Modal */
+.modal-content{border-radius:6px}
+.modal img{width:100%;max-height:360px;object-fit:cover}
+
+/* =========================================
+   11. FOOTER SECTION
+   ========================================= */
+footer{background:var(--ink);color:#b9b19e;text-align:center;padding:2rem}
+footer b{color:var(--oro)}
+
+.foot{display:grid;grid-template-columns:1.4fr 1fr auto;gap:2rem;align-items:center;text-align:left}
+.foot .brand{color:#f1e9d6;font-size:1.8rem}
+.foot p{margin:.2rem 0 0}
+
+/* ফুটারের লিংকগুলো */
+.fl{display:flex;gap:1.2rem;flex-wrap:wrap}
+.fl a{text-decoration:none; position: relative; transition: color 0.3s ease;}
+.fl a:hover{color:var(--oro)}
+
+/* Powered by Dev.Ankur এর ডিজাইন */
+.foot-credit {
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+.dev-link {
+  color: var(--oro);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.05rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* হোভার করলে নামের নিচে সুন্দর দাগ আসবে */
+.dev-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--oro);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.dev-link:hover {
+  color: #f1e9d6;
+}
+
+.dev-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* মোবাইলের জন্য রেসপন্সিভ */
+@media(max-width: 768px) {
+  .foot-credit {
+    justify-content: center;
+  }
+}
+
+/* =========================================
+   12. UTILITIES & REVEAL ANIMATIONS
+   ========================================= */
+.rv{opacity:0;transform:translateY(14px);transition:.7s}
+.rv.in{opacity:1;transform:none}
+
+/* =========================================
+   13. RESPONSIVE MEDIA QUERIES
+   ========================================= */
+@media(max-width:992px){
+  .studio, .lab-grid, .hero-in {grid-template-columns:1fr}
+  .nav a.l{display:none}
+  .pipe{grid-template-columns:1fr 1fr;row-gap:2rem}
+  .pipe::before{display:none}
+  .foot{grid-template-columns:1fr;text-align:center}
+  .fl{justify-content:center}
+  .navr .eng{display:none}
+  
+  .insp-container {grid-template-columns: 1fr; gap: 3rem;}
+  .insp-img-box:nth-child(1), .insp-img-box:nth-child(2) {transform: translateY(0);}
+}
+
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr}
+  section{padding:3.5rem 1rem}
+  .stats-in div{padding:0 .3rem}
+  .pipe{grid-template-columns:1fr}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none}
+}
+
+/* =========================================
+   14. EZIO TRILOGY PAGE (Assassin's Creed Theme)
+   ========================================= */
+
+/* পেজের বেস কালার (হালকা কালো/ধূসর) */
+body.ezio-page {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: var(--sans);
+}
+
+.ezio-page .nav.solid {
+  background: rgba(18, 18, 18, 0.9);
+  border-bottom: 1px solid #333;
+  color: #fff;
+}
+
+/* হিরো সেকশন (উপরে) */
+.ezio-hero {
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(18,18,18,1)), url('../assets/Ezio/ac_theme_bg.jpg') center/cover;
+  border-bottom: 1px solid #222;
+}
+
+.ezio-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: #d4af37; /* গোল্ডেন কালার */
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.ezio-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #a0a0a0;
+  letter-spacing: 2px;
+}
+
+/* টাইমলাইন সেকশন */
+.ezio-timeline-section {
+  padding: 5rem 2rem;
+}
+
+.ezio-timeline {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* কার্ড ডিজাইন */
+.ezio-card {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+.ezio-card:hover {
+  transform: translateY(-5px);
+  border-color: #d4af37;
+}
+
+.ezio-card.reverse {
+  flex-direction: row-reverse;
+}
+
+/* ছবির ডিজাইন */
+.ezio-img-wrapper {
+  flex: 0 0 40%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid #333;
+  position: relative;
+}
+
+.ezio-img-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  pointer-events: none;
+}
+
+.ezio-img-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.ezio-card:hover .ezio-img-wrapper img {
+  transform: scale(1.05);
+}
+
+/* লেখার ডিজাইন */
+.ezio-content {
+  flex: 1;
+}
+
+.ezio-year {
+  display: inline-block;
+  color: #d4af37;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d4af37;
+  padding-bottom: 5px;
+}
+
+.ezio-content h2 {
+  font-family: 'Cinzel', serif;
+  color: #fff;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.ezio-content p {
+  color: #b0b0b0;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* মোবাইলের জন্য রেসপন্সিভ */
+@media (max-width: 768px) {
+  .ezio-card, .ezio-card.reverse {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  .ezio-img-wrapper {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .ezio-title {
+    font-size: 2.5rem;
+  }
+}
